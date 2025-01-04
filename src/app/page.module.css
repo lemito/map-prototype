@@ -27,14 +27,14 @@
   }
 }
 
-.main {
+/* .main {
   display: flex;
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
-}
+} */
 
-.main ol {
+/* .main ol {
   font-family: var(--font-geist-mono);
   padding-left: 0;
   margin: 0;
@@ -54,7 +54,7 @@
   padding: 2px 4px;
   border-radius: 4px;
   font-weight: 600;
-}
+} */
 
 .ctas {
   display: flex;
