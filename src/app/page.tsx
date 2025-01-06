@@ -1,10 +1,9 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import Map from "@/components/Map";
 
 export default function Home() {
   return (
-    <div>
+    <div style={{ width: "50%", height: "100vh" }}>
+      <h1>Тут пока только карта</h1>
       <Map />
     </div>
   );
