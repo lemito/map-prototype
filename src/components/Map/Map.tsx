@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
@@ -6,56 +6,6 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { Feature } from "geojson";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
-
-const DrawRectangleMode = {
-  onSetup(): unknown {
-    const rectangle = this.newFeature({
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [[]],
-      },
-    });
-
-    this.addFeature(rectangle);
-
-    return {
-      rectangle,
-      startPoint: null,
-      currentPoint: null,
-    };
-  },
-
-  onMouseDown(state: any, e: any) {
-    state.startPoint = [e.lngLat.lng, e.lngLat.lat];
-  },
-
-  onMouseMove(state: any, e: any) {
-    if (!state.startPoint) return;
-
-    state.currentPoint = [e.lngLat.lng, e.lngLat.lat];
-    const [startLng, startLat] = state.startPoint;
-    const [endLng, endLat] = state.currentPoint;
-
-    const coordinates = [
-      [startLng, startLat],
-      [endLng, startLat],
-      [endLng, endLat],
-      [startLng, endLat],
-      [startLng, startLat],
-    ];
-
-    state.rectangle.setCoordinates([coordinates]);
-  },
-
-  onMouseUp(state: any) {
-    this.changeMode("simple_select", { featureIds: [state.rectangle.id] });
-  },
-
-  toDisplayFeatures(state: unknown, geojson: unknown, display: unknown) {
-    display(geojson);
-  },
-};
 
 const MapBox: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -74,19 +24,13 @@ const MapBox: React.FC = () => {
     const draw = new MapboxDraw({
       displayControlsDefault: false,
       controls: {
+        polygon: true,
         trash: true,
       },
-      modes: {
-        ...MapboxDraw.modes,
-        draw_rectangle: DrawRectangleMode, 
-      },
+      defaultMode: "draw_polygon",
     });
 
     mapInstance.addControl(draw);
-
-    const drawRectangle = () => {
-      draw.changeMode("draw_rectangle");
-    };
 
     mapInstance.on("draw.create", (e: { features: Feature[] }) => {
       const feature = e.features[0];
@@ -95,38 +39,61 @@ const MapBox: React.FC = () => {
       }
     });
 
-    const button = document.createElement("button");
-    button.textContent = "Рисовать прямоугольник";
-    button.style.position = "absolute";
-    button.style.top = "10px";
-    button.style.left = "10px";
-    button.style.zIndex = "1000";
-    button.style.padding = "10px";
-    button.style.background = "white";
-    button.style.cursor = "pointer";
-    button.onclick = drawRectangle;
-    mapContainerRef.current.appendChild(button);
-
     return () => {
       mapInstance.remove();
     };
   }, []);
 
   return (
-    <div>
+    // <div>
+    //   <div
+    //     ref={mapContainerRef}
+    //     style={{ width: "80%", height: "80vh"}}
+    //   ></div>
+    //   <div
+    //     style={{
+    //       height: 75,
+    //       width: 150,
+    //       position: "absolute",
+    //       bottom: 40,
+    //       left: 10,
+    //       backgroundColor: "rgba(255, 255, 255, 0.9)",
+    //       padding: 15,
+    //       textAlign: "center",
+    //     }}
+    //   >
+    //     <br />
+    //     <h4 style={{ background: "black" }}>Координаты выделенной области:</h4>
+    //     <pre>
+    //       {coordinates || "Выделите область, чтобы увидеть координаты."}
+    //     </pre>
+    //   </div>
+    // </div>
+    <>
       <div
         ref={mapContainerRef}
-        style={{ width: "100%", height: "80vh", position: "relative" }}
-      />
+        id="map"
+        style={{ width: "100%", height: "80vh" }}
+      ></div>
       <div
-        style={{ padding: "10px", background: "#f0f0f0", marginTop: "10px" }}
+        className="calculation-box"
+        style={{
+          height: 75,
+          width: 150,
+          position: "absolute",
+          bottom: 40,
+          left: 10,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          padding: 15,
+          textAlign: "center",
+        }}
       >
-        <h4>Координаты выделенной области:</h4>
-        <pre>
+        <p style={{ color: "red" }}>Координаты</p>
+        <div id="calculated-area">
           {coordinates || "Выделите область, чтобы увидеть координаты."}
-        </pre>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
