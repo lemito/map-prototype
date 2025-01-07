@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { Feature } from "geojson";
 
@@ -45,34 +46,11 @@ const MapBox: React.FC = () => {
   }, []);
 
   return (
-    // <div>
-    //   <div
-    //     ref={mapContainerRef}
-    //     style={{ width: "80%", height: "80vh"}}
-    //   ></div>
-    //   <div
-    //     style={{
-    //       height: 75,
-    //       width: 150,
-    //       position: "absolute",
-    //       bottom: 40,
-    //       left: 10,
-    //       backgroundColor: "rgba(255, 255, 255, 0.9)",
-    //       padding: 15,
-    //       textAlign: "center",
-    //     }}
-    //   >
-    //     <br />
-    //     <h4 style={{ background: "black" }}>Координаты выделенной области:</h4>
-    //     <pre>
-    //       {coordinates || "Выделите область, чтобы увидеть координаты."}
-    //     </pre>
-    //   </div>
-    // </div>
     <>
       <div
         ref={mapContainerRef}
         id="map"
+        className="map"
         style={{ width: "100%", height: "80vh" }}
       ></div>
       <div
