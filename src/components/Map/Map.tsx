@@ -46,7 +46,7 @@ const MapBox: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <div>
       <div
         ref={mapContainerRef}
         id="map"
@@ -55,23 +55,23 @@ const MapBox: React.FC = () => {
       ></div>
       <div
         className="calculation-box"
-        style={{
-          height: 75,
-          width: 150,
-          position: "absolute",
-          bottom: 40,
-          left: 10,
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          padding: 15,
-          textAlign: "center",
-        }}
+        // style={{
+        //   height: 75,
+        //   width: 150,
+        //   position: "absolute",
+        //   bottom: 40,
+        //   left: 10,
+        //   backgroundColor: "rgba(255, 255, 255, 0.9)",
+        //   padding: 15,
+        //   textAlign: "center",
+        // }}
       >
         <p style={{ color: "red" }}>Координаты</p>
         <div id="calculated-area">
           {coordinates || "Выделите область, чтобы увидеть координаты."}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
